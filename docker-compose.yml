@@ -1,0 +1,31 @@
+services:
+
+  backend:
+    build: ./backend
+    container_name: prothoton-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+    environment:
+      - SARVAM_API_KEY=sk_qa7h42pu_P9J2uIuUafUFxnfuY5TAdY3K
+      - GEMINI_API_KEY=your_gemini_api_key_here
+      - MONGO_URI=mongodb://mongodb:27017
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    container_name: prothoton-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  mongodb:
+    image: mongo:latest
+    container_name: prothoton-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongo:/data/db
